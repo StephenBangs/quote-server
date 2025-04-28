@@ -7,9 +7,6 @@ use axum::{routing::get, Router, response::Html};
 use std::net::{SocketAddr, IpAddr, Ipv4Addr};
 use templates::IndexTemplate;
 use askama::Template;
-//TODO:
-//testing if this lets me compile
-//use hyper::Server;
 
 #[tokio::main]
 async fn main() {
@@ -24,31 +21,9 @@ async fn main() {
     eprintln!("quote-server serving http://{}", ip);
     let listener = tokio::net::TcpListener::bind(ip).await.unwrap();
     axum::serve(listener, app).await.unwrap();
-
-    //TODO:
-
-    // //define listening addr
-    // let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    // println!("listening on http://{}", addr);
-
-    //New swap to include a hyper Server, since I don't know how to do this 
-    //otherwise right now
-    //Server::bind(&addr)
-
-    //start server
-    //Not working
-    //axum::Server::bind(&addr)
-    
-    //Per cargo clippy recommendation, no idea? 
-    //This seems absolutely not relevant
-    //tokio::net::windows::named_pipe::PipeEnd::bind(&addr)
-
-    // Server::bind(&addr)
-    //     .serve(app.into_make_service())
-    //     .await
-    //     .unwrap();
 }
 
+//hardcoded quote currently
 async fn show_quote() -> Html<String> {
 
     let quote = quote::Quote {
