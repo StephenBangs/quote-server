@@ -1,10 +1,15 @@
 # quote-server
 
 Quote server for CS 410P - Full Stack Rust
+
 Stephen Bangs
+
 CS 410P - Bart Massey
+
 Quote Server Rust Webserver
+
 Milestone 1 - Display a single joke in a browser using Axum and Askama (and Tokio)
+
 4/27/28
 
 **This is a basic webserver written in Rust that will develop into a more fully "feature complete" webserver as we continue in the class.**
