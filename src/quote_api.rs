@@ -29,10 +29,7 @@ pub struct NewQuote {
         (status = 500, description = "Internal server error")
     )
 )]
-pub async fn add_quote(
-    State(pool): State<SqlitePool>,
-    Json(new): Json<NewQuote>,
-) -> Result<Json<Quote>, AppError> {
+pub async fn add_quote( State(pool): State<SqlitePool>, Json(new): Json<NewQuote>, ) -> Result<Json<Quote>, AppError> {
     let inserted = sqlx::query_as!(
         Quote,
         r#"INSERT INTO quotes (id, text, author, creator)
