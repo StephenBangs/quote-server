@@ -9,12 +9,11 @@ use askama::Template;
 //use sqlx for grabbing quotes
 use sqlx::FromRow;
 
-
-use clap::error::AppError;
 use sqlx::SqlitePool;
 use std::fs::File;
 use std::path::Path;
 use std::io::BufReader;
+use crate::AppError;
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow, ToSchema)]
 pub struct Quote {
@@ -32,13 +31,9 @@ pub struct ImportQuote {
     pub creator: String,
 }
 
-pub async fn load_quotes_from_json<P: AsRef<Path>>(
-    db: &SqlitePool,
-    path: P,
-) -> Result<(), AppError> {
+pub async fn load_quotes_from_json<P: AsRef<Path>>(db: &SqlitePool, path: P,) -> Result<(), AppError> {
     let file = File::open(path)?;
     let reader = BufReader::new(file);
-
     let quotes: Vec<ImportQuote> = serde_json::from_reader(reader)?;
 
     for quote in quotes {
