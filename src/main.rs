@@ -2,13 +2,13 @@
 //5/30/25
 //Second check in
 
-use axum::{routing::{get, post, delete}, Router, response::Html};
+use axum::{routing::{get, post, delete}, Router/*, response::Html*/};
 use std::net::{SocketAddr, IpAddr, Ipv4Addr};
-use templates::IndexTemplate;
-use askama::Template;
+//use templates::IndexTemplate;
+//use askama::Template;
 //milestone 2 additions
-use sqlx::sqlite::{ SqlitePoolOptions, SqlitePool };
-use std::env;
+use sqlx::sqlite::{ SqlitePool };
+//use std::env;
 //Utoipa doc
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
@@ -22,7 +22,7 @@ mod error;
 use crate::quote_api::*;
 use crate::web::quote_homepage;
 use crate::error::AppError;
-use crate::quote::{ load_quotes_from_json, Quote, ImportQuote, }; // json import helper
+use crate::quote::{ load_quotes_from_json, Quote/*, ImportQuote,*/ }; // json import helper
 
 //TODO clap
 use clap::Parser;
@@ -65,7 +65,7 @@ async fn main() {
 
     //if cli flag --init-from is passed, load from json file.
     if let Some(json_path) = &config.init_from {
-        load_quotes_from_json(&pool, json_path).await;
+        let _ = load_quotes_from_json(&pool, json_path).await;
     }
    
     let swagger_router = SwaggerUi::new("/swagger-ui")
@@ -78,9 +78,9 @@ async fn main() {
 
         //REST api endpoints, hopefully
         .route("/api/quotes", post(add_quote))
-        .route("/api/quotes/:id", delete(delete_quote))
+        .route("/api/quotes/id", delete(delete_quote))
         .route("/api/quotes/random", get(get_random_quote))
-        .route("/api/quotes/author/:author", get(get_quotes_by_author))  
+        .route("/api/quotes/author/author", get(get_quotes_by_author))  
         .route("/", get(quote_homepage))
         .with_state(pool);
 
@@ -101,7 +101,7 @@ async fn main() {
 }
 
 //hardcoded quote currently
-async fn show_quote() -> Html<String> {
+/* async fn show_quote() -> Html<String> {
     let quote = Quote {
         id: "01".to_string(),
         qtext: "For a time, I rest in the grace of the world, and am free.".to_string(),
@@ -112,4 +112,4 @@ async fn show_quote() -> Html<String> {
     //create template for quote, then render
     let template = IndexTemplate { quote };
     Html(template.render().unwrap())
-}
+} */
