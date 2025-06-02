@@ -31,7 +31,7 @@ pub struct ImportQuote {
     pub creator: String,
 }
 
-pub async fn load_quotes_from_json<P: AsRef<Path>>(db: &SqlitePool, path: P,) -> Result<(), AppError> {
+pub async fn load_quotes_from_json(pool: &SqlitePool, path: &str,) -> Result<(), AppError> {
     let file = File::open(path)?;
     let reader = BufReader::new(file);
     let quotes: Vec<ImportQuote> = serde_json::from_reader(reader)?;
@@ -47,7 +47,7 @@ pub async fn load_quotes_from_json<P: AsRef<Path>>(db: &SqlitePool, path: P,) ->
             quote.author,
             quote.creator,            
         )
-        .execute(db)
+        .execute(pool)
         .await?;
     }
     Ok(())

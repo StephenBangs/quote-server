@@ -1,7 +1,6 @@
 //HTML template struct for now. 
 
 use askama::Template;
-use askama_axum::IntoResponse;
 use crate::quote::Quote;
 
 //TODO
