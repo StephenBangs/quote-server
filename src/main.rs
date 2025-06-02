@@ -2,7 +2,7 @@
 //5/30/25
 //Second check in
 
-use axum::{routing::{get, post, delete}, Router, response::Html};
+use axum::{routing::{get, post, delete}, Router, response::Html, debug_handler};
 use std::net::{SocketAddr, IpAddr, Ipv4Addr};
 use templates::IndexTemplate;
 use askama::Template;
@@ -94,10 +94,7 @@ async fn main() {
     //let app = app_with_state
     let app = Router::new()
         .merge(swagger_router)
-        // .merge(
-        //     SwaggerUi::new("/swagger-ui")
-        //         .url("/api-doc/openapi.json", ApiDoc::openapi())
-        // ) 
+
         .with_state(pool.clone())
 
         //REST api endpoints, hopefully
@@ -105,7 +102,9 @@ async fn main() {
         .route("/api/quotes/:id", delete(delete_quote))
         .route("/api/quotes/random", get(get_random_quote))
         .route("/api/quotes/author/:author", get(get_quotes_by_author))  
-        .route("/", get(quote_homepage));    
+        .route("/", get(quote_homepage))
+        
+        .with_state(pool); 
         //mount swagger ui my merging in own router
 
         //8-9
@@ -124,7 +123,6 @@ async fn main() {
                 .into_router()
                 .with_state(pool.clone())
         ) */
-        //.with_state(pool); 
 
     //Basic format taken from class example: https://github.com/pdx-cs-rust-web/webhello/blob/axum/src/main.rs
     let ip = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 3000);
