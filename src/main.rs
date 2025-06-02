@@ -26,7 +26,6 @@ use crate::quote::{ load_quotes_from_json, Quote, ImportQuote, }; // json import
 
 //TODO clap
 use clap::Parser;
-//use std::borrow::Cow;
 
 //swagger
 #[derive(OpenApi)]
@@ -44,16 +43,6 @@ use clap::Parser;
 )]
 pub struct ApiDoc;
 
-//for arguments CLI
-// #[derive(Parser, Debug)]
-// #[command(name = "quote-server")]
-// struct Args {
-//     #[arg(long, env = "DATABASE_URL", default_value = "sqlite://db/knock-knock.db")]
-//     database_url: String,
-// }
-
-//TODO
-//Commenting out for now
 #[derive(Parser)]
 pub struct Config {
     //sqlite db uri
@@ -65,25 +54,9 @@ pub struct Config {
     init_from: Option<String>
 }
 
-//TODO
-//Taken from bart massey's main.rs db_uri function
-// fn Config(db_uri: Option<&str>) -> Cow<str> {
-//     if  let Some(db_uri) = db_uri {
-//         db_uri.into()
-//     } else if let Ok(db_uri) = std::env::var("DATABASE_URL") {
-//         db_uri.into()
-//     } else {
-//         "sqlite://db/quotes.db".into()
-//     }
-// }
-
 #[tokio::main]
 async fn main() {
     println!("\nStarting Quote Server.\n"); 
-    //CLI args? need to understand more.
-    //TODO
-    //commenting out for Config changes
-    //let args = Args::parse();
 
     let config = Config::parse();
 
@@ -91,23 +64,18 @@ async fn main() {
         .await
         .expect("Failed to connect to database");
 
-    //let config = Config(args.db_uri.as_deref)
-    //let pool = SqlitePool::connect(&database_url).await.expect("Failed to connect to DB");
-    
-    //connect to sqlite using uri
-    // let pool = SqlitePoolOptions::new()
-    //     .max_connections(5)
-    //     .connect(&config.db_uri)
-    //     .await;//TODO ?
-
-    //let pool = SqlitePool::connect("sqlite://db/quotes.db").await.expect("Failed to connect to DB");
-
-    //TODO
-        //if cli flag --init-from is passed, load from json file.
+    //if cli flag --init-from is passed, load from json file.
     if let Some(json_path) = &config.init_from {
         load_quotes_from_json(&pool, json_path).await;
     }
    
+    //7
+    let swagger_router: Router<()> = SwaggerUi::new("/swagger-ui")
+        .url("/api-doc/openapi.json", ApiDoc::openapi())
+        .into(); 
+    //7 
+    let swagger_with_state: Router<SqlitePool> = swagger_router.map_state(|()| pool.clone()); 
+
     //app router
     let app = Router::new()        
         //REST api endpoints, hopefully
@@ -116,15 +84,18 @@ async fn main() {
         .route("/api/quotes/random", get(get_random_quote))
         .route("/api/quotes/author/:author", get(get_quotes_by_author))  
         //homepage
-        .route("/", get(quote_homepage))       
-        .route_service(
-            "/swagger-ui",
+        .route("/", get(quote_homepage))     
+        //mount swagger ui my merging in own router
+        .merge(swagger_with_state)
+
+        //7
+/*         .merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/api-doc/openapi.json", ApiDoc::openapi())
-        )
-        //swagger-ui, backed by json
-        //.merge(SwaggerUi::new("/swagger-ui"))//.url("/api-doc/openapi.json", ApiDoc::openapi()))
-        // Add database state so handlers can access the connection pool
+                .into_router()
+                .with_state(pool.clone())
+        ) */
+
         .with_state(pool); 
 
 

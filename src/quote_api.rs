@@ -46,21 +46,13 @@ pub async fn add_quote( State(pool): State<SqlitePool>, Json(new): Json<NewQuote
     Ok(Json(inserted))
 }
 
-#[utoipa::path(
-    delete,
-    path = "/api/quotes/{id}",
-    params(
-        ("id" = String, Path, description = "ID of the quote to delete")
-    ),
+#[utoipa::path( delete, path = "/api/quotes/{id}", params(
+    ("id" = String, Path, description = "ID of the quote to delete")),
     responses(
         (status = 200, description = "Quote deleted"),
         (status = 404, description = "Quote not found")
-    )
-)]
-pub async fn delete_quote(
-    State(pool): State<SqlitePool>,
-    Path(id): Path<String>,
-) -> Result<(), AppError> {
+    ))]
+pub async fn delete_quote( State(pool): State<SqlitePool>, Path(id): Path<String>, ) -> Result<(), AppError> {
     let rows = sqlx::query!("DELETE FROM quotes WHERE id = ?", id)
         .execute(&pool)
         .await?
@@ -73,14 +65,10 @@ pub async fn delete_quote(
     }
 }
 
-#[utoipa::path(
-    get,
-    path = "/api/quotes/random",
-    responses(
-        (status = 200, description = "Random quote", body = Quote),
-        (status = 404, description = "No quotes in database")
-    )
-)]
+#[utoipa::path( get, path = "/api/quotes/random", responses(
+    (status = 200, description = "Random quote", body = Quote),
+    (status = 404, description = "No quotes in database")
+    ))]
 pub async fn get_random_quote(State(pool): State<SqlitePool>,) -> Result<Json<Quote>, AppError> {
     let quote = sqlx::query_as!(
         Quote,
@@ -95,27 +83,20 @@ pub async fn get_random_quote(State(pool): State<SqlitePool>,) -> Result<Json<Qu
     }
 }
 
-#[utoipa::path(
-    get,
-    path = "/api/quotes/author/{author}",
-    params(
-        ("author" = String, Path, description = "Author name to search for")
-    ),
+#[utoipa::path( get, path = "/api/quotes/author/{author}", params(
+        ("author" = String, Path, description = "Author name to search for")),
     responses(
         (status = 200, description = "Quotes by author", body = [Quote])
-    )
-)]
-pub async fn get_quotes_by_author(
-    State(pool): State<SqlitePool>,
-    Path(author): Path<String>,
-) -> Result<Json<Vec<Quote>>, AppError> {
-    let quotes = sqlx::query_as!(
-        Quote,
-        r#"SELECT * FROM quotes WHERE author = ?"#,
-        author
-    )
-    .fetch_all(&pool)
-    .await?;
+    ))]
+pub async fn get_quotes_by_author( State(pool): State<SqlitePool>, Path(author): Path<String>, )
+    -> Result<Json<Vec<Quote>>, AppError> {
+        let quotes = sqlx::query_as!(
+            Quote,
+            r#"SELECT * FROM quotes WHERE author = ?"#,
+            author
+        )
+        .fetch_all(&pool)
+        .await?;
 
-    Ok(Json(quotes))
+        Ok(Json(quotes))
 }
