@@ -1,6 +1,7 @@
 //web handler for askama templating
 
-use axum::{response::IntoResponse, extract::State};
+use axum::extract::State;
+use askama_axum::IntoResponse;
 use sqlx::SqlitePool;
 use crate::error::AppError;
 use crate::templates::IndexTemplate;

@@ -32,6 +32,8 @@ _"Make a Rust project in the repository, and catch up with the class to the poin
 
 # Steps to create Database
 
-I was having an incredibly hard time getting  `cargo sqlx migrate run` to work, but this seems to:
+I was having an incredibly hard time getting  `cargo sqlx migrate run` to work, but this seems to work on the command line:
 
-sqlx database setup --source .\migrations\
+`sqlx database setup --source .\migrations\`
+
+`cargo sqlx prepare`

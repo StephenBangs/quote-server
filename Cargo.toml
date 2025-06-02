@@ -1,12 +1,13 @@
 [package]
 name = "quote-server"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
-askama = "0.14.0"
+askama = "0.12.1"
+askama_axum = "0.4.0"
 axum = "0.8.3"
-clap = {version = "4.5.39", features = ["derive"]}
+clap = {version = "4.5.0", features = ["derive", "env"]}
 fastrand = "2.3.0"
 log = "0.4.27"
 mime = "0.3.17"
@@ -14,7 +15,7 @@ serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.44.2", features = ["full"] }
 sqlx = {version = "0.8.5", features = ["runtime-tokio", "sqlite", "derive", "macros", "migrate", "json", "chrono"]}
 serde_json = "1.0.140"
-utoipa = "5.3.1"
-utoipa-swagger-ui = {version = "5.0.0", features = ["axum"]}
+utoipa = "5.0.0"
+utoipa-swagger-ui = {version = "9", features = ["axum"]}
 thiserror = "2.0.12"
 
