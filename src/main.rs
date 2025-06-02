@@ -46,7 +46,6 @@ pub struct ApiDoc;
 #[derive(Parser)]
 pub struct Config {
     //sqlite db uri
-    /* env = "DATABASE_URL",*/
     #[arg(long, env = "DATABASE_URL", default_value = "sqlite://db/quotes.db")]
     db_uri: String,
 
@@ -69,25 +68,55 @@ async fn main() {
         load_quotes_from_json(&pool, json_path).await;
     }
    
-    //7
-    let swagger_router: Router<()> = SwaggerUi::new("/swagger-ui")
-        .url("/api-doc/openapi.json", ApiDoc::openapi())
-        .into(); 
-    //7 
-    let swagger_with_state: Router<SqlitePool> = swagger_router.map_state(|()| pool.clone()); 
+    // //7
+    // let swagger_router: Router<()> = SwaggerUi::new("/swagger-ui")
+    //     .url("/api-doc/openapi.json", ApiDoc::openapi())
+    //     .into(); 
+    // //7 
+    // let swagger_with_state: Router<SqlitePool> = swagger_router.map_state(|()| pool.clone()); 
 
+    //10
+    // let swagger_subrouter = SwaggerUi::new("/swagger-ui")
+    //     .url("/api-doc/openapi.json", ApiDoc::openapi())
+    //     .build();
+    // let app_without_state = Router::new()
+    //     .merge(swagger_subrouter);
+    // let app_with_state = app_without_state.with_state(pool.clone());
+
+
+    let swagger_router = SwaggerUi::new("/swagger-ui")
+        .url("/api-doc/openapi.json", ApiDoc::openapi());
+   
     //app router
-    let app = Router::new()        
+    //8-9
+    //let app = Router::new()        
+    //10
+    //let app = app_with_state
+    let app = Router::new()
+        .merge(swagger_router)
+        // .merge(
+        //     SwaggerUi::new("/swagger-ui")
+        //         .url("/api-doc/openapi.json", ApiDoc::openapi())
+        // ) 
+        .with_state(pool.clone())
+
         //REST api endpoints, hopefully
         .route("/api/quotes", post(add_quote))
         .route("/api/quotes/:id", delete(delete_quote))
         .route("/api/quotes/random", get(get_random_quote))
         .route("/api/quotes/author/:author", get(get_quotes_by_author))  
-        //homepage
-        .route("/", get(quote_homepage))     
+        .route("/", get(quote_homepage));    
         //mount swagger ui my merging in own router
-        .merge(swagger_with_state)
 
+        //8-9
+        // .route_service(
+        //     "/swagger-ui",
+        //     SwaggerUi::new("/swagger-ui")
+        //         .url("/api-doc/openapi.json", ApiDoc::openapi())
+        // )
+        
+        //8
+        //.merge(swagger_with_state)
         //7
 /*         .merge(
             SwaggerUi::new("/swagger-ui")
@@ -95,9 +124,7 @@ async fn main() {
                 .into_router()
                 .with_state(pool.clone())
         ) */
-
-        .with_state(pool); 
-
+        //.with_state(pool); 
 
     //Basic format taken from class example: https://github.com/pdx-cs-rust-web/webhello/blob/axum/src/main.rs
     let ip = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 3000);
