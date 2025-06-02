@@ -28,3 +28,10 @@ _"Make a Rust project in the repository, and catch up with the class to the poin
 3) Don't close program running, and open browser to visit localhost port 3000:
     http://127.0.0.1:3000/
 4) Stare in awe and wonder upon life's mysteries while looking at the quote. Take a second to appreciate yourself and your own journey. Or don't! After all, you are the master of your own fate: you are the captain of your soul.
+
+
+# Steps to create Database
+
+I was having an incredibly hard time getting  `cargo sqlx migrate run` to work, but this seems to:
+
+sqlx database setup --source .\migrations\

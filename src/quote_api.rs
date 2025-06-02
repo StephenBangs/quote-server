@@ -15,7 +15,7 @@ use crate::error::AppError;
 #[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct NewQuote {
     pub id: String,
-    pub text: String,
+    pub qtext: String,
     pub author: String,
     pub creator: String,
 }
@@ -32,13 +32,13 @@ pub struct NewQuote {
 pub async fn add_quote( State(pool): State<SqlitePool>, Json(new): Json<NewQuote>, ) -> Result<Json<Quote>, AppError> {
     let inserted = sqlx::query_as!(
         Quote,
-        r#"INSERT INTO quotes (id, text, author, creator)
+        r#"INSERT INTO quotes (id, qtext, author, creator)
            VALUES (?, ?, ?, ?)
-           RETURNING id, text, author, creator"#,
+           RETURNING id, qtext, author, creator"#,
         new.id,
-        new.text,
+        new.qtext,
         new.author,
-        new.creator
+        new.creator,
     )
     .fetch_one(&pool)
     .await?;

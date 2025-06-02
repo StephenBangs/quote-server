@@ -9,7 +9,7 @@
         "type_info": "Text"
       },
       {
-        "name": "text",
+        "name": "qtext",
         "ordinal": 1,
         "type_info": "Text"
       },
@@ -28,7 +28,7 @@
       "Right": 1
     },
     "nullable": [
-      true,
+      false,
       false,
       false,
       false

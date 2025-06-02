@@ -18,7 +18,7 @@ use crate::AppError;
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow, ToSchema)]
 pub struct Quote {
     pub id: String,
-    pub text: String,
+    pub qtext: String,
     pub author: String,
     pub creator: String,
 }
@@ -26,7 +26,7 @@ pub struct Quote {
 #[derive(Debug, Clone, Deserialize)]
 pub struct ImportQuote {
     pub id: String,
-    pub text: String,
+    pub qtext: String,
     pub author: String,
     pub creator: String,
 }
@@ -39,11 +39,11 @@ pub async fn load_quotes_from_json<P: AsRef<Path>>(db: &SqlitePool, path: P,) ->
     for quote in quotes {
         sqlx::query!(
             r#"
-            INSERT INTO quotes (id, text, author, creator)
+            INSERT INTO quotes (id, qtext, author, creator)
             VALUES (?, ?, ?, ?)
             "#,
             quote.id,
-            quote.text,
+            quote.qtext,
             quote.author,
             quote.creator,            
         )

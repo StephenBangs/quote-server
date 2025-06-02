@@ -96,7 +96,7 @@ async fn main() {
 async fn show_quote() -> Html<String> {
     let quote = Quote {
         id: "01".to_string(),
-        text: "For a time, I rest in the grace of the world, and am free.".to_string(),
+        qtext: "For a time, I rest in the grace of the world, and am free.".to_string(),
         author: "Wendell Berry".to_string(),
         creator: "Admin".to_string(),
 };

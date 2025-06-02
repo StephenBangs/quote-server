@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "INSERT INTO quotes (id, text, author, creator)\n           VALUES (?, ?, ?, ?)\n           RETURNING id, text, author, creator",
+  "query": "INSERT INTO quotes (id, qtext, author, creator)\n           VALUES (?, ?, ?, ?)\n           RETURNING id, qtext, author, creator",
   "describe": {
     "columns": [
       {
@@ -9,7 +9,7 @@
         "type_info": "Text"
       },
       {
-        "name": "text",
+        "name": "qtext",
         "ordinal": 1,
         "type_info": "Text"
       },
@@ -28,11 +28,11 @@
       "Right": 4
     },
     "nullable": [
-      true,
+      false,
       false,
       false,
       false
     ]
   },
-  "hash": "88a7ad64f661c00dd9d2140b0422d2109c8edef5ea0b2baf86d52031a3d23dea"
+  "hash": "0a7a81830872d53a70ce5e679c7162b75532c1e560b233dd009521fcfbedad61"
 }
