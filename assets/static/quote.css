@@ -1,0 +1,55 @@
+/* 
+CSS file for quote server
+Located in: assets/static/quote.css 
+*/
+body {
+  font-family: sans-serif;
+  margin: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.quote-display blockquote {
+  font-style: italic;
+  font-size: 1.25rem;
+  margin: 1rem 0;
+}
+
+.quote-display .author {
+  text-align: right;
+  font-weight: bold;
+}
+
+.quote-display .creator {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+form {
+  margin: 1rem 0;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 0.25rem;
+  margin-top: 0.25rem;
+  box-sizing: border-box;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+}

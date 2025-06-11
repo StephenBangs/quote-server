@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quote Server</title>
+    <link rel="stylesheet" href="/static/quote.css" />
+  </head>
+  <body>
+    <h1>Quote Server</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Quote Server</title> 
-</head>
+    <div class="quote-display">
+      <blockquote>
+        "{{ quote.qtext }}"
+      </blockquote>
+      <p class="author">— {{ quote.author }}</p>
+      <p class="creator">Added by: {{ quote.creator }}</p>
+    </div>
 
-<body>
-    <h1>{{quote.qtext}}</h1>
-    <p>&dash; {{quote.author}}</p>
-</body>
+    <form action="/api/quotes/random" method="get">
+      <button type="submit">Random Quote</button>
+    </form>
 
-</html> 
+    <hr/>
+
+    <form action="/api/quotes" method="post">
+      <fieldset>
+        <legend>Add a New Quote</legend>
+        <label for="id">ID:</label>
+        <input id="id" name="id" required />
+
+        <label for="qtext">Quote Text:</label>
+        <textarea id="qtext" name="qtext" rows="3" required></textarea>
+
+        <label for="author">Author:</label>
+        <input id="author" name="author" required />
+
+        <label for="creator">Creator:</label>
+        <input id="creator" name="creator" required />
+      </fieldset>
+      <button type="submit">Add Quote</button>
+    </form>
+  </body>
+</html>

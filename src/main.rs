@@ -2,7 +2,18 @@
 //6/10/25
 //final project submission
 
+//TODO remove - temporary suppressing unused import messages with clippy
+#![allow(unused_imports)]
+
 use axum::{routing::{get, post, delete}, Router};
+use axum::{
+    self,
+    RequestPartsExt,
+    extract::{Path, Query, State, Json},
+    http::{self, StatusCode},
+    response::{self, IntoResponse},
+    routing,
+};
 use std::net::{SocketAddr, IpAddr, Ipv4Addr};
 
 //milestone 2 additions
@@ -12,13 +23,33 @@ use sqlx::sqlite::{ SqlitePool };
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
+//Final Submission additions
+use utoipa::{ToSchema};
+use tower_http::services::ServeFile;
+use utoipa_axum::router::OpenApiRouter;
+use utoipa_redoc::{Redoc, Servable};
+use utoipa_rapidoc::RapiDoc;
+use crate::api::ApiDoc;
+use tower_http::{services, trace};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use tokio::{net, signal, sync::RwLock, time::Duration};
+use chrono::{prelude::*, TimeDelta};
+use axum_extra::{
+    headers::{authorization::Bearer, Authorization},
+    TypedHeader,
+};
+
+use std::borrow::Cow;
+use std::sync::Arc;
+
+//my files
 mod quote;
-mod quote_api;
+mod api;
 mod templates;
 mod web;
 mod error;
 
-use crate::quote_api::*;
+use crate::api::*;
 use crate::web::quote_homepage;
 use crate::error::AppError;
 use crate::quote::{ load_quotes_from_json, Quote}; // json import helper
@@ -26,7 +57,7 @@ use crate::quote::{ load_quotes_from_json, Quote}; // json import helper
 //clap for cli args
 use clap::Parser;
 
-//swagger ui definitions for openapi. Generated a baseline idea of how to do this with chatGPT
+/* //swagger ui definitions for openapi. Generated a baseline idea of how to do this with chatGPT
 #[derive(OpenApi)]
 #[openapi(
     paths(
@@ -40,7 +71,7 @@ use clap::Parser;
         (name = "quotes", description = "Famous quote API endpoints")
     )
 )]
-pub struct ApiDoc;
+pub struct ApiDoc; */
 
 #[derive(Parser)]
 pub struct Config {
@@ -50,6 +81,41 @@ pub struct Config {
 
     #[arg(long)]
     init_from: Option<String>
+}
+
+//Credit to Bart Massey and Gemini for this code. Using directly from knock-knock-2
+async fn shutdown_signal() {
+    let ctrl_c = async {
+        signal::ctrl_c()
+            .await
+            .expect("Failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        signal::unix::signal(signal::unix::SignalKind::terminate())
+            .expect("Failed to create SIGTERM handler")
+            .recv()
+            .await;
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => {
+            tracing::info!("Received Ctrl+C (SIGINT) signal.");
+        },
+        _ = terminate => {
+            tracing::info!("Received SIGTERM signal.");
+        },
+    }
+
+    tracing::info!("Initiating graceful shutdown...");
+
+    // Example: Give some time for in-flight requests to complete
+    tokio::time::sleep(Duration::from_secs(2)).await;
+    tracing::info!("Cleanup complete.");
 }
 
 //Main can set --init-from to db folder
@@ -76,50 +142,63 @@ async fn main() {
         .await
         .expect("Failed to import quotes from json");
     }
-   
+  
+    //TODO prev
     //building swagger router with openapi doc
-    let swagger_router = SwaggerUi::new("/swagger-ui")
-        .url("/api-doc/openapi.json", ApiDoc::openapi());
+    // let swagger_router = SwaggerUi::new("/swagger-ui")
+    //     .url("/api-doc/openapi.json", ApiDoc::openapi());
+
+
+    //inspiration taken from Knock-Knock-2 by Bart Massey
+    //https://github.com/pdx-cs-rust-web/knock-knock-2/
+    //build the openapi router
+    let (api_router, openapi) =
+        OpenApiRouter::with_openapi(ApiDoc::openapi())
+            .nest("/api", api::router().into())
+            .split_for_parts();
+
+    // swagger UI, Redoc, RapiDoc
+    let swagger_ui = SwaggerUi::new("/swagger-ui")
+        .url("/api-doc/openapi.json", openapi.clone());
+    let redoc_ui = Redoc::with_url("/redoc", openapi.clone());
+    let rapidoc_ui = RapiDoc::new("/api-doc/openapi.json")
+        .path("/rapidoc"); 
+    //Try 2
+    // let rapidoc_ui = RapiDoc::new("/rapidoc")
+    //     .url("/api-doc/openapi.json"); 
+    //try 1
+    // let rapidoc_ui = RapiDoc::new("/api-doc/openapi.json").path("/rapidoc");
   
     //create main router, mount swagger router
     //shared db pool as state
     //define REST endpoints
     let app = Router::new()
-        .merge(swagger_router)
-        .with_state(pool.clone())
-
+    
+        .route("/", get(quote_homepage))
+        // Serve CSS from assets/static/quote.css
+        .route_service("/static/quote.css", ServeFile::new("assets/static/quote.css"),)
+        .merge(swagger_ui)
+        .merge(redoc_ui)
+        .merge(rapidoc_ui)
+        .merge(api_router) 
+        
+        //TODO prev
+        //.merge(swagger_router)
+        //.with_state(pool.clone())
         //REST api endpoints, hopefully
-        .route("/api/quotes", post(add_quote))
-        .route("/api/quotes/{id}", delete(delete_quote))
-        .route("/api/quotes/random", get(get_random_quote))
-        .route("/api/quotes/author/{author}", get(get_quotes_by_author))
+        // .route("/api/quotes", post(add_quote))
+        // .route("/api/quotes/{id}", delete(delete_quote))
+        // .route("/api/quotes/random", get(get_random_quote))
+        // .route("/api/quotes/author/{author}", get(get_quotes_by_author))
         
         //HTML ui  
-        .route("/", get(quote_homepage))
-        //TODO for some reason it wants this as well
         .with_state(pool);
 
-    
     //Basic format taken from class example: https://github.com/pdx-cs-rust-web/webhello/blob/axum/src/main.rs
     let ip = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 3000);
     eprintln!("quote-server serving http://{}", ip);
     let listener = tokio::net::TcpListener::bind(ip).await.unwrap();
-    //axum::serve(listener, app).await.unwrap();
-    
-    //TODO test 2 
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown_signal())
+        .await.unwrap();
 }
-
-//hardcoded quote currently
-/* async fn show_quote() -> Html<String> {
-    let quote = Quote {
-        id: "01".to_string(),
-        qtext: "For a time, I rest in the grace of the world, and am free.".to_string(),
-        author: "Wendell Berry".to_string(),
-        creator: "Admin".to_string(),
-};
-    
-    //create template for quote, then render
-    let template = IndexTemplate { quote };
-    Html(template.render().unwrap())
-} */
