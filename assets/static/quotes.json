@@ -1,16 +1,185 @@
 [
-    {
-      "id":"1","qtext":"Whatever you are, be a good one.","author":"Abraham Lincoln","creator":"admin"},
-    {
-      "id": "2",
-      "qtext": "qtext2",
-      "author": "author2",
-      "creator": "djibouti" 
-    },
-    {
-      "id": "3",
-      "qtext": "qtext3",
-      "author": "author3",
-      "creator": "admin3" 
-    }
+  {
+    "id":"32","qtext":"Whatever you are, be a good one.","author":"Abraham Lincoln","creator":"admin"
+  },
+  {
+    "id": "31",
+    "qtext": "The only limit to our realization of tomorrow is our doubts of today.",
+    "author": "Franklin D. Roosevelt",
+    "creator": "seed"
+  },
+  {
+    "id": "33",
+    "qtext": "In the middle of difficulty lies opportunity.",
+    "author": "Albert Einstein",
+    "creator": "seed"
+  },
+  {
+    "id": "34",
+    "qtext": "What you get by achieving your goals is not as important as what you become by achieving your goals.",
+    "author": "Zig Ziglar",
+    "creator": "seed"
+  },
+  {
+    "id": "45",
+    "qtext": "The journey of a thousand miles begins with one step.",
+    "author": "Lao Tzu",
+    "creator": "seed"
+  },
+  {
+    "id": "5",
+    "qtext": "That which does not kill us makes us stronger.",
+    "author": "Friedrich Nietzsche",
+    "creator": "seed"
+  },
+  {
+    "id": "6",
+    "qtext": "Life is what happens when you're busy making other plans.",
+    "author": "John Lennon",
+    "creator": "seed"
+  },
+  {
+    "id": "7",
+    "qtext": "When the going gets tough, the tough get going.",
+    "author": "Joe Kennedy",
+    "creator": "seed"
+  },
+  {
+    "id": "8",
+    "qtext": "You must be the change you wish to see in the world.",
+    "author": "Mahatma Gandhi",
+    "creator": "seed"
+  },
+  {
+    "id": "9",
+    "qtext": "You only live once, but if you do it right, once is enough.",
+    "author": "Mae West",
+    "creator": "seed"
+  },
+  {
+    "id": "10",
+    "qtext": "Tough times never last but tough people do.",
+    "author": "Robert H. Schuller",
+    "creator": "seed"
+  },
+  {
+    "id": "11",
+    "qtext": "Get busy living or get busy dying.",
+    "author": "Stephen King",
+    "creator": "seed"
+  },
+  {
+    "id": "12",
+    "qtext": "Whether you think you can or you think you can’t, you’re right.",
+    "author": "Henry Ford",
+    "creator": "seed"
+  },
+  {
+    "id": "13",
+    "qtext": "Tis better to have loved and lost than to have never loved at all.",
+    "author": "Alfred Lord Tennyson",
+    "creator": "seed"
+  },
+  {
+    "id": "14",
+    "qtext": "He who has a why to live can bear almost any how.",
+    "author": "Friedrich Nietzsche",
+    "creator": "seed"
+  },
+  {
+    "id": "15",
+    "qtext": "I think, therefore I am.",
+    "author": "René Descartes",
+    "creator": "seed"
+  },
+  {
+    "id": "16",
+    "qtext": "The unexamined life is not worth living.",
+    "author": "Socrates",
+    "creator": "seed"
+  },
+  {
+    "id": "17",
+    "qtext": "To be, or not to be, that is the question.",
+    "author": "William Shakespeare",
+    "creator": "seed"
+  },
+  {
+    "id": "18",
+    "qtext": "All that glitters is not gold.",
+    "author": "William Shakespeare",
+    "creator": "seed"
+  },
+  {
+    "id": "19",
+    "qtext": "Not everything that is faced can be changed, but nothing can be changed until it is faced.",
+    "author": "James Baldwin",
+    "creator": "seed"
+  },
+  {
+    "id": "20",
+    "qtext": "Do what you can, with what you have, where you are.",
+    "author": "Theodore Roosevelt",
+    "creator": "seed"
+  },
+  {
+    "id": "21",
+    "qtext": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "author": "Winston Churchill",
+    "creator": "seed"
+  },
+  {
+    "id": "22",
+    "qtext": "Believe you can and you're halfway there.",
+    "author": "Theodore Roosevelt",
+    "creator": "seed"
+  },
+  {
+    "id": "23",
+    "qtext": "Act as if what you do makes a difference. It does.",
+    "author": "William James",
+    "creator": "seed"
+  },
+  {
+    "id": "24",
+    "qtext": "Happiness is not something ready made. It comes from your own actions.",
+    "author": "Dalai Lama",
+    "creator": "seed"
+  },
+  {
+    "id": "25",
+    "qtext": "Dream big and dare to fail.",
+    "author": "Norman Vaughan",
+    "creator": "seed"
+  },
+  {
+    "id": "26",
+    "qtext": "Fall seven times and stand up eight.",
+    "author": "Japanese Proverb",
+    "creator": "seed"
+  },
+  {
+    "id": "27",
+    "qtext": "If you want to lift yourself up, lift up someone else.",
+    "author": "Booker T. Washington",
+    "creator": "seed"
+  },
+  {
+    "id": "28",
+    "qtext": "It always seems impossible until it's done.",
+    "author": "Nelson Mandela",
+    "creator": "seed"
+  },
+  {
+    "id": "29",
+    "qtext": "To love and be loved is to feel the sun from both sides.",
+    "author": "David Viscott",
+    "creator": "seed"
+  },
+  {
+    "id": "30",
+    "qtext": "The best way to predict the future is to invent it.",
+    "author": "Alan Kay",
+    "creator": "seed"
+  }
 ]

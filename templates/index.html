@@ -22,7 +22,7 @@
 
     <hr/>
 
-    <form action="/api/quotes" method="post">
+    <form id = "add-quote-form">
       <fieldset>
         <legend>Add a New Quote</legend>
         <label for="id">ID:</label>
@@ -41,3 +41,32 @@
     </form>
   </body>
 </html>
+
+<!-- Added to test if adding quote form is working. Framework from stack overflow-->
+<script>
+  document
+    .getElementById("add-quote-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault(); // don’t do a normal form post
+
+      // gather values
+      const id      = document.getElementById("id").value;
+      const qtext   = document.getElementById("qtext").value;
+      const author  = document.getElementById("author").value;
+      const creator = document.getElementById("creator").value;
+
+      // send JSON
+      const resp = await fetch("/api/quotes", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ id, qtext, author, creator }),
+      });
+
+      if (resp.ok) {
+        // reload page or navigate to see the new quote
+        window.location.href = "/";
+      } else {
+        alert(`Error adding quote: ${resp.status} ${resp.statusText}`);
+      }
+    });
+</script>
