@@ -1,7 +1,6 @@
 //HTML template struct for now. 
 
-use askama::Template;
-use crate::quote::Quote;
+
 
 //TODO
 //previously working
@@ -11,6 +10,8 @@ pub struct IndexTemplate<'a> {
     pub quote: &'a Quote,
 }
 */
+use askama::Template;
+use crate::quote::Quote;
 
 #[derive(Template)]
 #[template(path = "index.html")]

@@ -1,6 +1,10 @@
 # quote-server
 
-Quote server for CS 410P - Full Stack Rust
+Final Project - Quote server for CS 410P - Full Stack Rust
+
+Github repository:
+
+*https://github.com/StephenBangs/quote-server*
 
 Stephen Bangs
 
@@ -8,16 +12,37 @@ CS 410P - Bart Massey
 
 Quote Server Rust Webserver
 
-Milestone 1 - Display a single joke in a browser using Axum and Askama (and Tokio)
+Final Project Submission - Create a quote server webpage in a browser.
 
-4/27/28
+Written as an Axum Webservice with:
+    -An Askama-templated HTML UI 
+    -A Utoipa-documented REST API, with a documentation endpoint for swagger UI
+    -A basic REST browser client UI written in Leptos
 
-**This is a basic webserver written in Rust that will develop into a more fully "feature complete" webserver as we continue in the class.**
+6/10/25
 
-# Currently working on Milestone 1: 
+**This is a basic webserver written in Rust, with a sqlite database.**
 
-_"Make a Rust project in the repository, and catch up with the class to the point of having a basic templated server-side website that displays a single quote or recipe. Build your webserver using Axum and Askama, following the patterns of our server."_
+# Currently working on Final submission: 
 
+_Your course project is expected to be either a recipe service or a quote service, written in Axum with SQlite. You may have used SQLx or an ORM such as SeaORM. We will be looking for:
+
+A database-driven Axum web service with:
+An Askama-templated HTML UI
+A Utoipa-documented REST API, with a documentation endpoint for at least Swagger-UI
+A basic REST browser client UI written in Yew, Leptos or some other WASM-based frontend
+A reasonably thorough README.md with your name, details of what you did, what did not go well or is still outstanding, and anything else you think we should know when looking at the project
+Optional but desirable features include:
+
+Authentication using the JWT scheme taught in class or something similar.
+Ability to do authenticated writes to the database through one or more client UIs and/or the REST API
+A working Dockerfile
+Submission
+You should once again submit your project URL; also let us know in Zulip if it has changed since the second checkpoint. We will pull your repo on the due date, and notify you if there is a problem with that.
+
+The browser client (Yew, Leptos or whatever) will necessarily be in a second crate source directory. That crate source should either be part of your original repo, or included in that repo as a Git submodule in case it was developed separately.
+
+Please do ask on Zulip if you have any questions._
 
 # Steps to display single quote:
 
@@ -37,3 +62,15 @@ I was having an incredibly hard time getting  `cargo sqlx migrate run` to work, 
 `sqlx database setup --source .\migrations\`
 
 `cargo sqlx prepare`
+
+# Steps to use Swagger API
+
+//Todo
+
+# How to use Leptos
+
+//Todo
+
+# Misc info
+
+My milestone 2 submission was done two days after the given due date of the 30th - It looks like somebody scraped and cloned my github repo on the 2nd of June, but I wanted to let you know that I needed a little more time to get it working!! Sorry!!
