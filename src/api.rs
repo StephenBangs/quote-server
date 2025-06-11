@@ -1,5 +1,4 @@
 //Quote API file.
-//TODO
 
 use axum::{
     extract::{Path, State},
@@ -22,6 +21,9 @@ use crate::error::AppError;
 // OpenAPI document
 #[derive(OpenApi)]
 #[openapi(
+   servers(
+        (url = "/api", description = "Quote API base path")
+    ), 
     paths(
         get_all_quotes,
         add_quote,
