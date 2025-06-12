@@ -1,4 +1,4 @@
-mod joke;
+mod quote;
 
 use std::collections::HashSet;
 use leptos::prelude::*;
@@ -17,13 +17,13 @@ pub fn EnterInput(set_endpoint: WriteSignal<String>) -> impl IntoView {
         // to read the current input and update the submitted text.
         let current_input = input_text.get(); // Get the current value from the signal
         if !current_input.trim().is_empty() {
-            set_endpoint.set(format!("joke/{}", current_input));
+            set_endpoint.set(format!("quotes/{}", current_input));
         }
     };
 
     view! {
         <div>
-            "Find a joke: " <input
+            "Find a quote: " <input
                 type="text"
                 // Bind the input's value to the signal
                 prop:value=input_text
@@ -37,20 +37,20 @@ pub fn EnterInput(set_endpoint: WriteSignal<String>) -> impl IntoView {
                         handle_enter_action(ev);
                     }
                 }
-                placeholder="Joke ID"
+                placeholder="Quote ID"
             />
         </div>
     }
 }
 
-fn format_tags(tags: &HashSet<String>) -> String {
-    let taglist: Vec<&str> = tags.iter().map(String::as_ref).collect();
-    taglist.join(", ")
-}
+// fn format_tags(tags: &HashSet<String>) -> String {
+//     let taglist: Vec<&str> = tags.iter().map(String::as_ref).collect();
+//     taglist.join(", ")
+// }
 
-fn fetch_joke() -> impl IntoView {
-    let (endpoint, set_endpoint) = signal::<String>("random-joke".to_string());
-    let joke = LocalResource::new(move || joke::fetch(endpoint.get()));
+fn fetch_quote() -> impl IntoView {
+    let (endpoint, set_endpoint) = signal::<String>("quotes/random".to_string());
+    let quote = LocalResource::new(move || quote::fetch(endpoint.get()));
 
     let error_fallback = move |errors: ArcRwSignal<Errors>| {
         let error_list = move || {
@@ -74,23 +74,22 @@ fn fetch_joke() -> impl IntoView {
         <div><Transition fallback=|| view! { <div>"Loading..."</div> }>
             <ErrorBoundary fallback=error_fallback>
                 {move || Suspend::new( async move {
-                    joke.map(|j| {
-                        // XXX Don't know how to fix this unwrap() yet.
+                    quote.map(|j| {
                         let j = j.as_ref().unwrap();
                         view! {
-                            <div class="joke">
-                                <span class="teller">{"Knock-Knock!"}</span><br/>
-                                <span class="tellee">{"Who's there?"}</span><br/>
-                                <span class="teller">{j.whos_there.clone()}</span><br/>
-                                <span class="tellee">{format!("{} who?", j.whos_there)}</span><br/>
-                                <span class="teller">{j.answer_who.clone()}</span>
-                            </div>
+                            <div class="quote">
+                                  <blockquote>
+                                    "Man, I love Quote Servers."
+                                  </blockquote>
+                                  <p class="author">"-Stephen Bangs"</p>
+                                  <p class="creator">"Added by: Admin"</p>
+                                </div>
                             <span class="annotation">
                                 {format!(
-                                    "[id: {}; tags: {}; source: {}]",
+                                    "[id: {}; author: {}; creator: {}]",
                                     j.id,
-                                    format_tags(&j.tags),
-                                    j.source,
+                                    j.author,
+                                    j.creator,
                                 )}
                             </span>
                         }
@@ -100,9 +99,9 @@ fn fetch_joke() -> impl IntoView {
         </Transition></div>
         <div>
             <button on:click=move |_| {
-                let ep = "random-joke".to_string();
+                let ep = "".to_string();
                 set_endpoint.set(ep)
-            }>Tell me another!</button>
+            }>Another Quote!</button>
             <EnterInput set_endpoint=set_endpoint/>
         </div>
     }
@@ -124,5 +123,5 @@ pub fn main() {
         .without_time()
         .init();
     console_error_panic_hook::set_once();
-    mount_to_body(fetch_joke)
+    mount_to_body(fetch_quote)
 }

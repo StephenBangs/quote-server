@@ -9,18 +9,18 @@ use std::collections::HashSet;
 #[derive(Serialize, Deserialize)]
 pub struct Quote {
     pub id: String,
-    pub whos_there: String,
-    pub answer_who: String,
-    pub tags: HashSet<String>,
-    pub source: String,
+    pub qtext: String,
+    pub author: String,
+    pub creator: String,
 }
 
 
-pub async fn fetch(endpoint: String) -> Result<Joke, Error> {
+pub async fn fetch(endpoint: String) -> Result<Quote, Error> {
     use reqwasm::http::Request;
 
     let ep = format!(
-        "http://localhost:3000/api/v1/{}",
+        //TODO
+        "http://localhost:3000/api/{}",
         endpoint,
     );
     let result = Request::get(&ep)

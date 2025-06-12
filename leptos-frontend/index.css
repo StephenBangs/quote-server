@@ -32,3 +32,19 @@ button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
 }
+
+.quote-display blockquote {
+  font-style: italic;
+  font-size: 1.25rem;
+  margin: 1rem 0;
+}
+
+.quote-display .author {
+  text-align: right;
+  font-weight: bold;
+}
+
+.quote-display .creator {
+  font-size: 0.85rem;
+  color: #666;
+}
