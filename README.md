@@ -25,7 +25,7 @@ Written as an Axum Webservice with:
 
 # Currently working on Final submission: 
 
-_Your course project is expected to be either a recipe service or a quote service, written in Axum with SQlite. You may have used SQLx or an ORM such as SeaORM. We will be looking for:
+**Your course project is expected to be either a recipe service or a quote service, written in Axum with SQlite. You may have used SQLx or an ORM such as SeaORM. We will be looking for:
 
 A database-driven Axum web service with:
 An Askama-templated HTML UI
@@ -42,7 +42,7 @@ You should once again submit your project URL; also let us know in Zulip if it h
 
 The browser client (Yew, Leptos or whatever) will necessarily be in a second crate source directory. That crate source should either be part of your original repo, or included in that repo as a Git submodule in case it was developed separately.
 
-Please do ask on Zulip if you have any questions._
+Please do ask on Zulip if you have any questions.**
 
 # Steps to display single quote:
 
@@ -59,7 +59,9 @@ Please do ask on Zulip if you have any questions._
 
     `cargo build`
 
-    `cargo run --release`
+    `cargo run --release -- --init-from assets/static/quotes.json`
+
+    *Make sure you run the --init-from assets/static/quotes.json upon initial setup!*
 
 
 4) Don't close server running, and open browser to visit localhost port 3000:
@@ -79,10 +81,6 @@ Note: Server will 404 if no jokes in database right now
 1) ~~Get the random quote button to work on page, not to go to `http://localhost:3000/api/quotes/random?`~~
 
 2) Get Leptos up and working
-
-3) Check if I am using askama templates properly
-
-4) Add other API call actions to the main page
 
 # Steps to create Database
 
@@ -112,7 +110,17 @@ Go to `http://localhost:3000/redoc` and try out the API!
 
 # How to use Leptos
 
-//Todo
+run regular server in directory `quote-server` with `cargo run --release`
+
+cd into `quote-server/leptos-frontend`
+
+run `trunk serve --open`
+
+__Marvel in wonder at uplifting quotes. This step is mandatory.__
+
+# Problems
+
+    Leptos is being a little squirrely, and I'm not sure I'm going to be able to get it working in time for submission at 11:00 on 6/11/25. Regular server seems to work pretty well.
 
 # Misc info on second check in
 

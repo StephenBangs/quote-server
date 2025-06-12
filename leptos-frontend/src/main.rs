@@ -77,13 +77,13 @@ fn fetch_quote() -> impl IntoView {
                     quote.map(|j| {
                         let j = j.as_ref().unwrap();
                         view! {
-                            <div class="quote">
-                                  <blockquote>
-                                    "Man, I love Quote Servers."
-                                  </blockquote>
-                                  <p class="author">"-Stephen Bangs"</p>
-                                  <p class="creator">"Added by: Admin"</p>
-                                </div>
+                            <div class="quote-display">
+                                <blockquote>
+                                    {j.qtext.clone()}
+                                </blockquote>
+                                <p class="author">{j.author.clone()}</p>
+                                <p class="creator">Added by: {j.creator.clone()}</p>
+                            </div>
                             <span class="annotation">
                                 {format!(
                                     "[id: {}; author: {}; creator: {}]",
