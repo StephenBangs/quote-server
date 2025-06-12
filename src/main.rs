@@ -57,22 +57,6 @@ use crate::quote::{ load_quotes_from_json, Quote}; // json import helper
 //clap for cli args
 use clap::Parser;
 
-/* //swagger ui definitions for openapi. Generated a baseline idea of how to do this with chatGPT
-#[derive(OpenApi)]
-#[openapi(
-    paths(
-        add_quote,
-        delete_quote,
-        get_random_quote,
-        get_quotes_by_author
-    ),
-    components(schemas(Quote)),
-    tags(
-        (name = "quotes", description = "Famous quote API endpoints")
-    )
-)]
-pub struct ApiDoc; */
-
 #[derive(Parser)]
 pub struct Config {
     //sqlite db uri
@@ -142,12 +126,6 @@ async fn main() {
         .await
         .expect("Failed to import quotes from json");
     }
-  
-    //TODO prev
-    //building swagger router with openapi doc
-    // let swagger_router = SwaggerUi::new("/swagger-ui")
-    //     .url("/api-doc/openapi.json", ApiDoc::openapi());
-
 
     //inspiration taken from Knock-Knock-2 by Bart Massey
     //https://github.com/pdx-cs-rust-web/knock-knock-2/
@@ -163,11 +141,6 @@ async fn main() {
     let redoc_ui = Redoc::with_url("/redoc", openapi.clone());
     let rapidoc_ui = RapiDoc::new("/api-doc/openapi.json")
         .path("/rapidoc"); 
-    //Try 2
-    // let rapidoc_ui = RapiDoc::new("/rapidoc")
-    //     .url("/api-doc/openapi.json"); 
-    //try 1
-    // let rapidoc_ui = RapiDoc::new("/api-doc/openapi.json").path("/rapidoc");
   
     //create main router, mount swagger router
     //shared db pool as state
@@ -181,16 +154,7 @@ async fn main() {
         .merge(redoc_ui)
         .merge(rapidoc_ui)
         .merge(api_router) 
-        
-        //TODO prev
-        //.merge(swagger_router)
-        //.with_state(pool.clone())
-        //REST api endpoints, hopefully
-        // .route("/api/quotes", post(add_quote))
-        // .route("/api/quotes/{id}", delete(delete_quote))
-        // .route("/api/quotes/random", get(get_random_quote))
-        // .route("/api/quotes/author/{author}", get(get_quotes_by_author))
-        
+
         //HTML ui  
         .with_state(pool);
 

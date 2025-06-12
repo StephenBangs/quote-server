@@ -31,7 +31,6 @@ chrono = "0.4.41"
 version = "0.6.4"
 features = ["fs", "trace", "cors"]
 
-
 [dependencies.tracing-subscriber]
 version = "0.3.19"
 features = ["env-filter"]
@@ -51,4 +50,3 @@ features = ["axum"]
 [dependencies.utoipa-axum]
 git = "https://github.com/juhaku/utoipa.git"
 rev = "cecda0531bf7d90800af66b186055932ee730526"
-
