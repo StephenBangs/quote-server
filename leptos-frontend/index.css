@@ -1,0 +1,34 @@
+/*CSS for leptos/trunk*/
+
+body {
+  font-family: sans-serif;
+  margin: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.quote {
+  border: 1px solid #444;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+input, textarea {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.25rem;
+  box-sizing: border-box;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+}

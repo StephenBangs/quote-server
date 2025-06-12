@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Quote Client</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <!-- Leptos mounts into the body -->
+    <div id="app"></div>
+
+    <script type="module">
+      import init, { mount_to_body } from "./leptos-frontend.js";
+      init().then(() => {
+        mount_to_body();
+      });
+    </script>
+  </body>
+</html>

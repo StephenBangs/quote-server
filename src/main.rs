@@ -38,7 +38,7 @@ use axum_extra::{
     headers::{authorization::Bearer, Authorization},
     TypedHeader,
 };
-
+use tower_http::cors::{CorsLayer, Any};
 use std::borrow::Cow;
 use std::sync::Arc;
 
@@ -153,7 +153,17 @@ async fn main() {
         .merge(swagger_ui)
         .merge(redoc_ui)
         .merge(rapidoc_ui)
-        .merge(api_router) 
+        .merge(api_router)
+        
+        //CORS layer for trunk 
+        .layer(
+            CorsLayer::new()
+            // allow any host (dev only)
+            .allow_origin(Any)            
+            // GET, POST, etc
+            .allow_methods(Any)           
+            .allow_headers(Any)
+        )
 
         //HTML ui  
         .with_state(pool);
